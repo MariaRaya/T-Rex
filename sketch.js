@@ -1,22 +1,51 @@
-var objeto;
+var trex, trex_running, edges;
+var groundImage, ground;
 
-function setup() {
-  createCanvas(400,400);
-  objeto = createSprite (200, 77, 24, 68);
+function preload(){
+  trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
+  groundImage = loadImage("ground2.png")
 }
 
-function draw() {
+function setup(){
+  createCanvas(600,200);
+  
+  //criando o trex
+  trex = createSprite(50,160,20,50);
+  trex.addAnimation("running", trex_running);
+  edges = createEdgeSprites();
+  
+  //adicione dimensão e posição ao trex
+  trex.scale = 0.5;
+  trex.x = 50
 
-  background("black");
+  // Chão
+  ground = createSprite(200,180,400,20);
+  ground.x = ground.width / 2;
+  ground.addAnimation("chão", groundImage);
+}
 
-  if (KeyIsDown(RIGHT_ARROW)) {
-    objeto.position.x = objeto.position.x +2;
+
+function draw(){
+  //definir a cor do plano de fundo 
+  background("white");
+
+  //movimento do chão
+  ground.velocityX = -2;
+  if (ground.x < 0){
+    ground.x = ground.width / 2; 
   }
 
+  //registrando a posição y do trex
+  console.log(trex.y)
+  
+  //pular quando tecla de espaço for pressionada
+  if(keyDown("space")){
+    trex.velocityY = -10;
+  }
+  
+  trex.velocityY = trex.velocityY + 0.5;
+  
+ //impedir que o trex caia
+  trex.collide(ground);
   drawSprites();
-
 }
-
-
-
-
