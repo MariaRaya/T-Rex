@@ -1,9 +1,11 @@
 var trex, trex_running, edges;
 var groundImage, ground, groundInvisivel;
+var nuvem, nuvemImagem;
 
 function preload(){  //Carrega a imagem
   trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
-  groundImage = loadImage("ground2.png")
+  groundImage = loadImage("ground2.png");
+  nuvemImagem = loadImage("cloud.png");
 }
 
 function setup(){
@@ -33,16 +35,11 @@ function draw(){
   //definir a cor do plano de fundo 
   background("white");
 
-  console.log(trex.y);
-
   //movimento do chão
   ground.velocityX = -2;
   if (ground.x < 0){
     ground.x = ground.width / 2;  // Faz a repetição do chão 
   }
-
-  //registrando a posição y do trex
-  console.log(trex.y)
   
   //pular quando tecla de espaço for pressionada
   if(keyDown("space") && trex.y > 100){
@@ -50,8 +47,21 @@ function draw(){
   }
   
   trex.velocityY = trex.velocityY + 0.5; // Faz com que o T-Rex retorne ao chão
-  
+  // Criar nuvens
+  criarNuvens ();
+  console.log(frameCount);
  //impedir que o trex caia
   trex.collide(groundInvisivel);
-  drawSprites();
+  drawSprites(); 
+
+}
+
+function criarNuvens(){
+  if (frameCount % 50 == 0){
+    nuvem = createSprite(600,100,40,10);
+    nuvem.velocityX = -5;
+    nuvem.addImage(nuvemImagem);
+    nuvem.y = random(30,100);
+    nuvem.scale = 0.6;
+  }
 }
